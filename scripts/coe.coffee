@@ -1,3 +1,3 @@
 module.exports = (robot) ->
-	robot.hear /.*(cóé|coeh|coe).*/i, (msg) ->
-		msg.send "cóe? belê?"
+	robot.hear /.*(cóé|coeh|coe|cóe|cóe).*/i, (msg) ->
+		msg.send "/play yeah" "cóé? belê?"
