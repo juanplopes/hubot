@@ -7,3 +7,6 @@ felixes = [
 module.exports = (robot) ->
   robot.hear /oi felix/i, (msg) ->
     msg.send msg.random felixes
+  robot.gear /tá aê felix\?/i, (msg) ->
+  	msg.send "Opa! Sou gay!"
+  	msg.send "/play yeah"
