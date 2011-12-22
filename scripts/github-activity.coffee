@@ -14,9 +14,10 @@ module.exports = (robot) ->
     oauth_token = process.env.HUBOT_GITHUB_TOKEN
     repo = msg.match[3].toLowerCase()
     repo = "#{process.env.HUBOT_GITHUB_USER}/#{repo}" unless ~repo.indexOf("/")
-    
+    auth = new Buffer("thehubot:da.hub0t").toString('base64')
+
     msg.http("https://api.github.com/repos/crafters/#{repo}/commits")
-      .headers(Authorization: "Basic thehubot:da.hub0t", Accept: "application/json")
+      .headers(Authorization: "Basic #{auth}", Accept: "application/json")
       .get() (err, res, body) ->
         if err
           msg.send "GitHub says: #{err}"
