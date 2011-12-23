@@ -1,5 +1,5 @@
 module.exports = (robot) ->
-	robot.hear /(quede|quedê|kede|kedê) (.*)/i, (msg) ->
+	robot.hear /(quede|quedê|kede|kedê) (.*\?+?)/i, (msg) ->
 		actions = [
 			"tá cagando", 
 			"foi jogar assassin's creed", 
