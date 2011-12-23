@@ -29,8 +29,8 @@ module.exports = (robot) ->
 read_contributors = (msg, response_handler) ->
     repo = msg.match[1].toLowerCase()
     repo = "#{process.env.HUBOT_GITHUB_USER}/#{repo}" unless repo.indexOf("/") > -1
-    bot_github_user = "thehubot"#process.env.HUBOT_BOT_GITHUB_USER 
-    bot_github_pass = "eusou.da.rub0t"#process.env.HUBOT_BOT_GITHUB_PASS
+    bot_github_user = process.env.HUBOT_BOT_GITHUB_USER 
+    bot_github_pass = process.env.HUBOT_BOT_GITHUB_PASS
     auth = new Buffer("#{bot_github_user}:#{bot_github_pass}").toString('base64')
     url = "https://api.github.com/repos/#{repo}/contributors"
     
