@@ -5,7 +5,8 @@ module.exports = (robot) ->
 			"foi jogar assassin's creed", 
 			"dormiu",
 			"foi abduzido hein... que triste",
-			"já era... se foi..."
+			"já era... se foi...",
+			"tá rebootando o windows, tsc tsc"
 		]
 
 		name = msg.match[2]
