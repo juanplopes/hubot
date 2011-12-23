@@ -29,8 +29,8 @@ module.exports = (robot) ->
 read_contributors = (msg, response_handler) ->
     repo = msg.match[1].toLowerCase()
     repo = "#{process.env.HUBOT_GITHUB_USER}/#{repo}" unless repo.indexOf("/") > -1
-    bot_github_user = process.env.HUBOT_BOT_GITHUB_USER
-    bot_github_pass = process.env.HUBOT_BOT_GITHUB_PASS
+    bot_github_user = "thehubot"#process.env.HUBOT_BOT_GITHUB_USER 
+    bot_github_pass = "eusou.da.rub0t"#process.env.HUBOT_BOT_GITHUB_PASS
     auth = new Buffer("#{bot_github_user}:#{bot_github_pass}").toString('base64')
     url = "https://api.github.com/repos/#{repo}/contributors"
     
@@ -41,7 +41,9 @@ read_contributors = (msg, response_handler) ->
           msg.send "GitHub says: #{err}"
           return
         commits = JSON.parse(body)
-        if commits.length <= 0
+        if commits.message
+          msg.send "Achievement unlocked: [LIKE A BOSS] no repository #{commits.message}!"
+        else if commits.length == 0
           msg.send "Achievement unlocked: [LIKE A BOSS] no commits found!"
         else
           msg.send "http://github.com/#{repo}"
