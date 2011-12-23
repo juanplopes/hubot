@@ -10,10 +10,9 @@
 # show me <user/repo> -- Shows activity for that project.
 
 module.exports = (robot) ->
-  robot.respond /show govsynchro/i, (msg)->
-    oauth_token = process.env.HUBOT_GITHUB_TOKEN
+  robot.respond /repo( me)? govsynchro/i, (msg)->
     repo = msg.match[1].toLowerCase()
     repo = "#{process.env.HUBOT_GITHUB_USER}/#{repo}" unless ~repo.indexOf("/")
     auth = new Buffer("thehubot:da.hub0t").toString('base64')
-
+    msg.send auth
     msg.send "oi"
