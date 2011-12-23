@@ -15,6 +15,8 @@ module.exports = (robot) ->
     repo = msg.match[1].toLowerCase()
     repo = "#{process.env.HUBOT_GITHUB_USER}/#{repo}" unless ~repo.indexOf("/")
     auth = new Buffer("thehubot:da.hub0t").toString('base64')
+    console.log(repo)
+    console.log(auth)
 
     msg.http("https://api.github.com/repos/crafters/govsynchro/commits")
       .headers(Authorization: "Basic #{auth}", Accept: "application/json")
@@ -23,6 +25,7 @@ module.exports = (robot) ->
           msg.send "GitHub says: #{err}"
           return
         commits = JSON.parse(body)
+        console.log(commits)
         if commits.length == 0
             msg.send "Achievement unlocked: commits zero!"
         else
