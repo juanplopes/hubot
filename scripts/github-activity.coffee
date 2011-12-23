@@ -16,6 +16,4 @@ module.exports = (robot) ->
             msg.send "Achievement unlocked: commits zero!"
         else
           for commit in commits
-            msg.send "commit"
-    msg.send auth
-    msg.send repo
+            msg.send commit.message
