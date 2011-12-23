@@ -32,10 +32,9 @@ module.exports = (robot) ->
 		user = msg.match[1].toLowerCase()
 		
 		foundUser = false
-		for k of (@robot.brain.data.users or { })
-			if @robot.brain.data.users[k]['name'].toLowerCase() is user
+		for userInRoom in @robot.users
+			if userInRoom.name.toLowerCase() is user
 	        	foundUser = true
-				break
 	
 		if foundUser
 			message = msg.match[2]
