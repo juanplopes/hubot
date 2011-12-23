@@ -23,13 +23,11 @@ print_calendar = (msg, project) ->
     if entries.count <= 0
       msg.send "No milestone found in this project #{project.name}"
       return
-    else
-      msg.send "Showing milestones for #{project.name} Project"
     for milestone in entries.records
       unless milestone.completedOn
         responsability = "None"
         responsability = milestone.responsibleParty.name if milestone.responsibleParty
-        msg.send "#{milestone.author.name} created #{milestone.title}, Responsible: #{responsability}, Status: #{milestone.status}, Deadline: #{milestone.deadline}"
+        msg.send "[#{project.name}] #{milestone.author.name} created #{milestone.title}, Responsible: #{responsability}, Status: #{milestone.status}, Deadline: #{milestone.deadline}"
           
           
 basecamp_request = (msg, url, handler) ->
