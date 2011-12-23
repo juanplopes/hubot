@@ -1,5 +1,5 @@
 module.exports = (robot) ->
-	robot.hear /^(é uma cilada)|^(cilada)|^(corre bino)|^(bilada)$/i, (msg) ->
+	robot.hear /(^(é uma cilada)|^(cilada)|^(corre bino)|^(bilada))(.*)$/i, (msg) ->
 		images = ["http://img638.imageshack.us/img638/6583/batimapedroebino.jpg",
 		"http://img10.imageshack.us/img10/8348/seloeumaciladabino.jpg",
 		"http://img844.imageshack.us/img844/6425/emboscada.jpg",
