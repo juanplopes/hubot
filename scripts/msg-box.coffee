@@ -33,6 +33,7 @@ module.exports = (robot) ->
 		
 		foundUser = false
 		for userInRoom in @robot.users
+			msg.send userInRoom.name.toLowerCase()
 			if userInRoom.name.toLowerCase() is user
 	        	foundUser = true
 	
