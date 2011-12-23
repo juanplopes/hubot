@@ -20,8 +20,8 @@ class MessageBox
 
 module.exports = (robot) ->
 	messagebox = new MessageBox robot
-	robot.enter (callback) ->
-		msg.send "User #{callback.user} entered the room"
+	robot.enter (msg) ->
+		msg.send "User entered the room"
 	robot.hear /^addmsg (.*): (.*)/i, (msg) ->
 		user = msg.match[1].toLowerCase()
 		message = msg.match[2]
