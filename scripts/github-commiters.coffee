@@ -8,12 +8,19 @@
 module.exports = (robot) ->
 	robot.hear /repo commiters (.*)/i, (msg) ->
 	    read_contributors msg, (commits) ->
+          max_length = commits.length
+          max_length = 20 if commits.length > 20
 			    for commit in commits
-				    msg.send "#{commit.login} -> #{commit.contributions}"
+				    msg.send "<strong>#{commit.login}</strong> -> #{commit.contributions}"
+            max_length -= 1
+            break unless max_length
 	robot.hear /repo top-commiter (.*)/i, (msg) ->
 	    read_contributors msg, (commits) ->
-          commit = commits.first
-          msg.send "#{commit.login} -> #{commit.contributions}"
+          top_commiter = null
+          for commit in commits
+            top_commiter = commit if top_commiter == null
+            top_commiter = commit if commit.contributions > top_commiter.contributions 
+          msg.send "<strong>#{top_commiter.login}</strong> -> #{top_commiter.contributions}"
 	
 	
 read_contributors = (msg, response_handler) ->
