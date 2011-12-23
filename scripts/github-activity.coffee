@@ -11,7 +11,7 @@ module.exports = (robot) ->
           msg.send "GitHub says: #{err}"
           return
         commits = JSON.parse(body)
-        msg.send commits
+        msg.send body
         if commits.length == 0
             msg.send "Achievement unlocked: commits zero!"
         else
