@@ -1,6 +1,12 @@
 module.exports = (robot) ->
 	robot.hear /(quede|quedê|kede|kedê) (.*)/i, (msg) ->
-		actions = ["tá cagando", "foi jogar assassin's creed", "dormiu"]
+		actions = [
+			"tá cagando", 
+			"foi jogar assassin's creed", 
+			"dormiu",
+			"foi abduzido hein... que triste",
+			"já era... se foi..."
+		]
 
 		name = msg.match[2]
 		name = name.replace("?","")
