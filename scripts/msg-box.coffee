@@ -12,11 +12,17 @@ class MessageBox
 
 		@robot.brain.data.messagebox[user].push msg
 		
-	removeAll: (user) ->
+	removeFor: (user) ->
 		delete @robot.brain.data.messagebox[user]
 		
 	user: (user) ->
 		return @robot.brain.data.messagebox[user] or []
+		
+	users: ->
+		return @robot.brain.data.messagebox
+		
+	removeAll: ->
+		delete @robot.brain.data.messagebox = {}
 
 module.exports = (robot) ->
 	messagebox = new MessageBox robot
@@ -24,16 +30,28 @@ module.exports = (robot) ->
 		sendUserMessages msg.message.user.name.toLowerCase(), msg, messagebox
 	robot.hear /^addmsg (.*): (.*)/i, (msg) ->
 		user = msg.match[1].toLowerCase()
-		message = msg.match[2]
-		messagebox.add user, message
-		msg.send "Message added for #{user}"
+		
+		foundUser = false
+		for k of (@robot.brain.data.users or { })
+			if @robot.brain.data.users[k]['name'].toLowerCase() is user
+	        	foundUser = true
+				break
+	
+		if foundUser
+			message = msg.match[2]
+			messagebox.add user, message
+			msg.send "Message added for #{user}"
+		else
+			msg.send "User #{user} doesn\'t exist"
 	robot.hear /^readmsg (.*)/i, (msg) ->
 		user = msg.match[1].toLowerCase()
 		sendUserMessages user, msg, messagebox
 	robot.hear /^resetmsg (.*)/i, (msg) ->
 		user = msg.match[1].toLowerCase()
-		messagebox.removeAll user
-		msg.send "Reseted messages for #{user}"	
+		messagebox.removeFor user
+		msg.send "Reseted messages for #{user}"
+	robot.hear /^resetallmsg$/i, (msg) ->
+		messagebox.removeAll
 		
 sendUserMessages = (user, msg, messagebox) ->
 	messages = messagebox.user user
@@ -44,5 +62,3 @@ sendUserMessages = (user, msg, messagebox) ->
 			count++
 			msgBody += "#{count}. message\n"
 		msg.send msgBody
-	else
-		msg.send "I dont have messages for #{user}"
