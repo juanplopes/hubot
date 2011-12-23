@@ -24,6 +24,7 @@ module.exports = (robot) ->
     msg.http(url)
       .headers(Authorization: "Basic #{auth}", Accept: "application/json")
       .get() (err, res, body) ->
+    	  msg.send "http://github.com/#{repo}"
         if err
           msg.send "GitHub says: #{err}"
           return
