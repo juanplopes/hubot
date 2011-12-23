@@ -8,7 +8,7 @@
 # developed by http://github.com/fellix - Crafters Software Studio
 
 module.exports = (robot) ->
-	robot.hear /^repo commiters (.*)/i, (msg) ->
+	robot.hear /^repo commiters (.*)$/i, (msg) ->
 	    read_contributors msg, (commits) ->
           max_length = commits.length
           max_length = 20 if commits.length > 20

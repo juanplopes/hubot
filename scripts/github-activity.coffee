@@ -13,7 +13,7 @@
 require('date-utils')
 
 module.exports = (robot) ->
-  robot.hear /repo show (.*)/i, (msg) ->
+  robot.hear /^repo show (.*)$/i, (msg) ->
     repo = msg.match[1].toLowerCase()
     repo = "#{process.env.HUBOT_GITHUB_USER}/#{repo}" unless repo.indexOf("/") > -1
     bot_github_user = process.env.HUBOT_BOT_GITHUB_USER
