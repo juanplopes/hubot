@@ -13,15 +13,15 @@ module.exports = (robot) ->
       for project in projects.records
         if project_name 
           if project.name == project_name
-            print_calendar msg, project
+            print_calendar msg, project, true
             return
         else
-          print_calendar msg, project
+          print_calendar msg, project, false
           
-print_calendar = (msg, project) ->
+print_calendar = (msg, project, searching) ->
   basecamp_request msg, "projects/#{project.id}/milestones.json", (entries) ->
     if entries.count <= 0
-      msg.send "No milestone found in this project #{project.name}"
+      msg.send "No milestone found in this project #{project.name}" if searching
       return
     for milestone in entries.records
       unless milestone.completedOn
