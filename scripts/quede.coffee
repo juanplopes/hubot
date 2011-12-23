@@ -8,12 +8,13 @@ module.exports = (robot) ->
 			"já era... se foi...",
 			"tá rebootando o windows, tsc tsc",
 			"quem?",
-			"nunca vi mais gordo..."
+			"nunca vi mais gordo...",
+			"ta almoçando"
 		]
 
 		name = msg.match[2]
 		name = name.replace("?","")
 		if name.match /vitor/i
-			name = "Vitor? Did you mean the windows guy?"
+			name += "? Did you mean the windows guy?"
 		action = msg.random actions
 		msg.send "#{name.toLowerCase()} #{action}"
