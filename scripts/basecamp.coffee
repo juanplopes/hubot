@@ -27,7 +27,7 @@ print_calendar = (msg, project, searching) ->
       unless milestone.completedOn
         responsability = "None"
         responsability = milestone.responsibleParty.name if milestone.responsibleParty
-        msg.send "[#{project.name}] #{milestone.author.name} created #{milestone.title}, Responsible: #{responsability}, Status: #{milestone.status}, Deadline: #{milestone.deadline}"
+        msg.send "[#{project.name}] #{milestone.title} -> #{milestone.status}: #{milestone.deadline}, Responsible: #{responsability}"
           
           
 basecamp_request = (msg, url, handler) ->
