@@ -8,7 +8,8 @@ module.exports = (robot) ->
 			"já era... se foi...",
 			"tá rebootando o windows, tsc tsc",
 			"quem?",
-			"nunca vi mais gordo..."
+			"nunca vi mais gordo...",
+			"ta almoçando"
 		]
 
 		name = msg.match[2]
