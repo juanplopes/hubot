@@ -33,7 +33,7 @@ read_contributors = (msg, response_handler) ->
     bot_github_pass = process.env.HUBOT_BOT_GITHUB_PASS
     auth = new Buffer("#{bot_github_user}:#{bot_github_pass}").toString('base64')
     url = "https://api.github.com/repos/#{repo}/contributors"
-
+    msg.send "http://github.com/#{repo}"
     msg.http(url)
       .headers(Authorization: "Basic #{auth}", Accept: "application/json")
       .get() (err, res, body) ->
