@@ -30,19 +30,9 @@ module.exports = (robot) ->
 		sendUserMessages msg.message.user.name.toLowerCase(), msg, messagebox
 	robot.hear /^addmsg (.*): (.*)/i, (msg) ->
 		user = msg.match[1].toLowerCase()
-		
-		foundUser = false
-		for userInRoom in @robot.users
-			msg.send userInRoom.name.toLowerCase()
-			if userInRoom.name.toLowerCase() is user
-	        	foundUser = true
-	
-		if foundUser
-			message = msg.match[2]
-			messagebox.add user, message
-			msg.send "Message added for #{user}"
-		else
-			msg.send "User #{user} doesn\'t exist"
+		message = msg.match[2]
+		messagebox.add user, message
+		msg.send "Message added for #{user}"
 	robot.hear /^readmsg (.*)/i, (msg) ->
 		user = msg.match[1].toLowerCase()
 		sendUserMessages user, msg, messagebox
