@@ -8,15 +8,13 @@
 
 module.exports = (robot) ->
 	robot.hear /^basecamp calendar( (.*))?$/i, (msg) ->
-    project_name = msg.match[2]
-    basecamp_request msg, 'projects.json', (projects) ->
-      for project in projects.records
-        if project_name 
-          if project.name == project_name
-            print_calendar msg, project, true
-            return
-        else
-          print_calendar msg, project, false
+    show_calendar msg
+  robot.hear /^basecamp todos( (.*))?$/i, (msg) ->
+    show_todos msg
+
+show_calendar = (msg) ->
+  project_name = msg.match[2]
+  using_projects msg, project_name, print_calendar  
           
 print_calendar = (msg, project, searching) ->
   basecamp_request msg, "projects/#{project.id}/milestones.json", (entries) ->
@@ -28,8 +26,36 @@ print_calendar = (msg, project, searching) ->
         responsability = "None"
         responsability = milestone.responsibleParty.name if milestone.responsibleParty
         msg.send "[#{project.name}] #{milestone.title} -> #{milestone.status}: #{milestone.deadline}, Responsible: #{responsability}"
-          
-          
+
+show_todos = (msg) ->
+  project_name = msg.match[2]
+  using_projects msg, project_name, print_todos
+  
+print_todos = (msg, project, searching) ->
+  basecamp_request msg, "projects/#{project.id}/todo_lists.json", (todo_lists) ->
+    if todo_lists.count <= 0
+      msg.send "No to-do found in this project #{project.name}" if searching
+      return
+    else
+      for todo_list in todo_lists.records
+        if !todo_list.completed && !todo_list.todoItemIds.empty?
+          basecamp_request msg, "todo_lists/#{todo_list.id}/todo_items.json", (todo_items) ->
+            for todo_item in todo_items.records
+              responsability = "None"
+              responsability = todo_item.responsibleParty.name if todo_item.responsibleParty
+              msg.send "[#{project.name}] #{todo_item.id} - #{todo_item.content} -> Responsible: #{responsability}" unless todo_item.completed
+  
+
+using_projects = (msg, project_name, handler) ->
+  basecamp_request msg, 'projects.json', (projects) ->
+    for project in projects.records
+      if project_name
+        if project.name == project_name
+          handler msg, project, true
+          return
+      else
+        handler msg, project, false
+            
 basecamp_request = (msg, url, handler) ->
   basecamp_key = "#{process.env.HUBOT_BASECAMP_KEY}"
   auth = new Buffer("#{basecamp_key}:X").toString('base64')
