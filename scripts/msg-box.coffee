@@ -39,7 +39,9 @@ sendUserMessages = (user, msg, messagebox) ->
 	messages = messagebox.user user
 	if messages.length > 0
 		msg.send "Messages for #{user}:"
+		count = 0
 		for message in messages
-			msg.send message
+			count++
+			msg.send "#{count}. message"
 	else
 		msg.send "I dont have messages for #{user}"
