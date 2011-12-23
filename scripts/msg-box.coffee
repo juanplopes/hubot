@@ -21,7 +21,7 @@ class MessageBox
 module.exports = (robot) ->
 	messagebox = new MessageBox robot
 	robot.enter (msg) ->
-		msg.send "User #{msg.message.user.name} entered the room"
+		sendUserMessages msg.message.user.name.toLowerCase(), msg, messagebox
 	robot.hear /^addmsg (.*): (.*)/i, (msg) ->
 		user = msg.match[1].toLowerCase()
 		message = msg.match[2]
@@ -33,7 +33,7 @@ module.exports = (robot) ->
 	robot.hear /^resetmsg (.*)/i, (msg) ->
 		user = msg.match[1].toLowerCase()
 		messagebox.removeAll user
-		msg.send "Reseted messages for #{user}"
+		msg.send "Reseted messages for #{user}"	
 		
 sendUserMessages = (user, msg, messagebox) ->
 	messages = messagebox.user user
