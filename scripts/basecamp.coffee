@@ -6,8 +6,6 @@
 
 # developed by http://github.com/fellix - Crafters Software Studio
 
-require('date-utils')
-
 module.exports = (robot) ->
 	robot.hear /^basecamp calendar( (.*))?$/i, (msg) ->
     project_name = msg.match[2]
@@ -31,15 +29,13 @@ print_calendar = (msg, project) ->
       unless milestone.completedOn
         responsability = "None"
         responsability = milestone.responsibleParty.name if milestone.responsibleParty
-        msg.send "#{milestone.author.name} created #{milestone.title}, Responsible: #{responsability}, Status: #{milestone.status}, Deadline: #{milestone.deadline}, Completed at: #{milestone.completedOn}"
-      
-      
+        msg.send "#{milestone.author.name} created #{milestone.title}, Responsible: #{responsability}, Status: #{milestone.status}, Deadline: #{milestone.deadline}"
           
           
 basecamp_request = (msg, url, handler) ->
-  basecamp_key = process.env.HUBOT_BASECAMP_KEY
+  basecamp_key = "#{process.env.HUBOT_BASECAMP_KEY}"
   auth = new Buffer("#{basecamp_key}:X").toString('base64')
-  basecamp_url = "http://#{process.env.HUBOT_BASECAMP_URL}.basecamphq.com"
+  basecamp_url = "https://#{process.env.HUBOT_BASECAMP_URL}.basecamphq.com"
   msg.http("#{basecamp_url}/#{url}")
     .headers(Authorization: "Basic #{auth}", Accept: "application/json")
       .get() (err, res, body) ->
