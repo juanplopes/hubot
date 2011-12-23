@@ -8,12 +8,12 @@
 module.exports = (robot) ->
 	robot.hear /repo commiters (.*)/i, (msg) ->
 	    read_contributors msg, (commits) ->
-			for commit in commits
-				msg.send "#{commit.login} -> #{commit.contributions}"
+			    for commit in commits
+				    msg.send "#{commit.login} -> #{commit.contributions}"
 	robot.hear /repo top-commiter (.*)/i, (msg) ->
 	    read_contributors msg, (commits) ->
-			commit = commits.first
-            msg.send "#{commit.login} -> #{commit.contributions}"
+          commit = commits.first
+          msg.send "#{commit.login} -> #{commit.contributions}"
 	
 	
 read_contributors = (msg, response_handler) ->
@@ -32,6 +32,6 @@ read_contributors = (msg, response_handler) ->
           return
         commits = JSON.parse(body)
         if commits.length == 0
-            msg.send "Achievement unlocked: [LIKE A BOSS] no commits found!"
+          msg.send "Achievement unlocked: [LIKE A BOSS] no commits found!"
         else
-			response_hander commits
+          response_handler commits
