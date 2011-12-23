@@ -1,5 +1,7 @@
 # Show the commiters from a repo
 #
+# add HUBOT_GITHUB_USER to your heroku env 
+# the HUBOT_GITHUB_USER should map to your account, not the bot account
 # the HUBOT_BOT_GITHUB_USER should map to the bot github username
 # the HUBOT_BOT_GITHUB_PASS should map to the bot github password
 
