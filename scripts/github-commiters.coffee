@@ -8,29 +8,29 @@
 # developed by http://github.com/fellix - Crafters Software Studio
 
 module.exports = (robot) ->
-	robot.hear /repo commiters (.*)/i, (msg) ->
+	robot.hear /^repo commiters (.*)/i, (msg) ->
 	    read_contributors msg, (commits) ->
           max_length = commits.length
           max_length = 20 if commits.length > 20
           for commit in commits
-            msg.send "[http://github.com/#{commit.login}] #{commit.contributions}"
+            msg.send "[#{commit.login}] #{commit.contributions}"
             max_length -= 1
             return unless max_length
               
-	robot.hear /repo top-commiter (.*)/i, (msg) ->
+	robot.hear /^repo top-commiter (.*)/i, (msg) ->
 	    read_contributors msg, (commits) ->
           top_commiter = null
           for commit in commits
             top_commiter = commit if top_commiter == null
             top_commiter = commit if commit.contributions > top_commiter.contributions 
-          msg.send "[http://github.com/#{top_commiter.login}] #{top_commiter.contributions} :trophy:"
+          msg.send "[#{top_commiter.login}] #{top_commiter.contributions} :trophy:"
 	
 	
 read_contributors = (msg, response_handler) ->
     repo = msg.match[1].toLowerCase()
     repo = "#{process.env.HUBOT_GITHUB_USER}/#{repo}" unless repo.indexOf("/") > -1
-    bot_github_user = process.env.HUBOT_BOT_GITHUB_USER
-    bot_github_pass = process.env.HUBOT_BOT_GITHUB_PASS
+    bot_github_user = "thehubot"#process.env.HUBOT_BOT_GITHUB_USER 
+    bot_github_pass = "eusou.da.rub0t"#process.env.HUBOT_BOT_GITHUB_PASS
     auth = new Buffer("#{bot_github_user}:#{bot_github_pass}").toString('base64')
     url = "https://api.github.com/repos/#{repo}/contributors"
     
@@ -41,7 +41,9 @@ read_contributors = (msg, response_handler) ->
           msg.send "GitHub says: #{err}"
           return
         commits = JSON.parse(body)
-        if commits.length == 0
+        if commits.message
+          msg.send "Achievement unlocked: [needle in a haystack] repository #{commits.message}!"
+        else if commits.length == 0
           msg.send "Achievement unlocked: [LIKE A BOSS] no commits found!"
         else
           msg.send "http://github.com/#{repo}"
