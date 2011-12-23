@@ -38,10 +38,11 @@ module.exports = (robot) ->
 sendUserMessages = (user, msg, messagebox) ->
 	messages = messagebox.user user
 	if messages.length > 0
-		msg.send "Messages for #{user}:"
+		msgBody = "Messages for #{user}:\n"
 		count = 0
 		for message in messages
 			count++
-			msg.send "#{count}. message"
+			msgBody += "#{count}. message\n"
+		msg.send msgBody
 	else
 		msg.send "I dont have messages for #{user}"
