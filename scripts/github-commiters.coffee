@@ -23,6 +23,7 @@ module.exports = (robot) ->
           for commit in commits
             top_commiter = commit if top_commiter == null
             top_commiter = commit if commit.contributions > top_commiter.contributions 
+          msg.send "/play trombone"
           msg.send "[http://github.com/#{top_commiter.login}] #{top_commiter.contributions} :trophy:"
 	
 	
