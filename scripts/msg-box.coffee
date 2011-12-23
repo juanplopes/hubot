@@ -8,3 +8,4 @@ module.exports = (robot) ->
 		msg.send msgbox
 	robot.hear /resetmsg/i, (msg) ->
 		msgbox = ''
+		count = 0
