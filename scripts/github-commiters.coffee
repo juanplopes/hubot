@@ -41,7 +41,7 @@ read_contributors = (msg, response_handler) ->
           msg.send "GitHub says: #{err}"
           return
         commits = JSON.parse(body)
-        if commits.length == 0
+        if commits.length <= 0
           msg.send "Achievement unlocked: [LIKE A BOSS] no commits found!"
         else
           msg.send "http://github.com/#{repo}"
