@@ -3,10 +3,11 @@ require('date-utils')
 module.exports = (robot) ->
   robot.hear /repo show (.*)/i, (msg) ->
     repo = msg.match[1].toLowerCase()
-    repo = "#{process.env.HUBOT_GITHUB_USER}/#{repo}" unless repo.indexOf("/")
+    repo = "#{process.env.HUBOT_GITHUB_USER}/#{repo}" unless repo.indexOf("/") > -1
     auth = new Buffer("thehubot:da.rub0t").toString('base64')
 
     url = "https://api.github.com/repos/#{repo}/commits"
+    msg.send url
     msg.http(url)
       .headers(Authorization: "Basic #{auth}", Accept: "application/json")
       .get() (err, res, body) ->
@@ -14,7 +15,6 @@ module.exports = (robot) ->
           msg.send "GitHub says: #{err}"
           return
         commits = JSON.parse(body)
-        msg.send body
         if commits.length == 0
             msg.send "Achievement unlocked: commits zero!"
         else
