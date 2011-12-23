@@ -23,7 +23,6 @@ module.exports = (robot) ->
           for commit in commits
             top_commiter = commit if top_commiter == null
             top_commiter = commit if commit.contributions > top_commiter.contributions 
-          msg.send "/play trombone"
           msg.send "[http://github.com/#{top_commiter.login}] #{top_commiter.contributions} :trophy:"
 	
 	
@@ -34,7 +33,7 @@ read_contributors = (msg, response_handler) ->
     bot_github_pass = process.env.HUBOT_BOT_GITHUB_PASS
     auth = new Buffer("#{bot_github_user}:#{bot_github_pass}").toString('base64')
     url = "https://api.github.com/repos/#{repo}/contributors"
-    msg.send "http://github.com/#{repo}"
+    
     msg.http(url)
       .headers(Authorization: "Basic #{auth}", Accept: "application/json")
       .get() (err, res, body) ->
@@ -45,4 +44,5 @@ read_contributors = (msg, response_handler) ->
         if commits.length == 0
           msg.send "Achievement unlocked: [LIKE A BOSS] no commits found!"
         else
+          msg.send "http://github.com/#{repo}"
           response_handler commits
