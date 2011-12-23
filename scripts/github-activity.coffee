@@ -7,7 +7,6 @@ module.exports = (robot) ->
     auth = new Buffer("thehubot:da.rub0t").toString('base64')
 
     url = "https://api.github.com/repos/#{repo}/commits"
-    msg.send url
     msg.http(url)
       .headers(Authorization: "Basic #{auth}", Accept: "application/json")
       .get() (err, res, body) ->
