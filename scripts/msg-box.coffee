@@ -21,7 +21,7 @@ class MessageBox
 module.exports = (robot) ->
 	messagebox = new MessageBox robot
 	robot.enter (msg) ->
-		msg.send "User entered the room"
+		msg.send "User #{msg.user} entered the room"
 	robot.hear /^addmsg (.*): (.*)/i, (msg) ->
 		user = msg.match[1].toLowerCase()
 		message = msg.match[2]
