@@ -1,5 +1,5 @@
 module.exports = (robot) ->
-	robot.hear /(quede|quedê|kede|kedê) (.*)/i, (msg) ->
+	robot.hear /^(quede|quedê|kede|kedê) (.*\?+?)/i, (msg) ->
 		actions = [
 			"tá cagando", 
 			"foi jogar assassin's creed", 
@@ -7,7 +7,8 @@ module.exports = (robot) ->
 			"foi abduzido hein... que triste",
 			"já era... se foi...",
 			"tá rebootando o windows, tsc tsc",
-			"quem?"
+			"quem?",
+			"nunca vi mais gordo..."
 		]
 
 		name = msg.match[2]
