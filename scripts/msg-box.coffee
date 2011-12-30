@@ -50,5 +50,5 @@ sendUserMessages = (user, msg, messagebox) ->
 		count = 0
 		for message in messages
 			count++
-			msgBody += "#{count}. message\n"
+			msgBody += "#{count}. #{message}\n"
 		msg.send msgBody
