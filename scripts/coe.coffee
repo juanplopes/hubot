@@ -1,3 +1,11 @@
 module.exports = (robot) ->
-	robot.hear /^(cóé|coeh|coe|cóe|cóe)\??$/i, (msg) ->
-		msg.send "cóé? belê?"
+	greetings = [
+			"cóé... belê?",
+			"sai fora rapá, nem te conheço",
+			"isso são horas?",
+			"cóé... sai da internet e vai trabalhar rapaz...",
+			"que que foi?",
+			"que que você quer?"
+	]
+	robot.hear /^(cóé|coeh|coe|cóe|coé)\??$/i, (msg) ->
+		msg.send msg.random greetings
