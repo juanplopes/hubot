@@ -16,5 +16,8 @@ module.exports = (robot) ->
 		name = name.replace("?","")
 		if name.match /vitor/i
 			name += "? Did you mean the windows guy?"
-		action = msg.random actions
+		if name.match /hana/i
+			name += "? Foi lavar roupa hein... que agonia, que agonia..."
+		else
+			action = msg.random actions
 		msg.send "#{name.toLowerCase()} #{action}"
