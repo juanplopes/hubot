@@ -1,5 +1,5 @@
 module.exports = (robot) ->
-	robot.hear /^yoda( quote)?$/i, (msg) ->
+	robot.hear /^yoda quote$/i, (msg) ->
 		quotes = ["Agree with you, the council does. Your apprentice, Skywalker will be.",
 		"Always two there are, no more, no less: a master and an apprentice.",
 		"Fear is the path to the Dark Side. Fear leads to anger, anger leads to hate; hate leads to suffering. I sense much fear in you.",
