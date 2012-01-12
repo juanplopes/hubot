@@ -24,5 +24,7 @@ module.exports = (robot) ->
 		"Reckless he is. Matters are worse.",
 		"When nine hundred years old you reach, look as good, you will not.",
 		"No. There is... another... Sky... walker..."]
-		msg.send msg.random quotes
+
+		quote = msg.random quotes
+		msg.send "\"#{quote}\" - Yoda"
 		
