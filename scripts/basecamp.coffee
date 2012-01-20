@@ -39,15 +39,15 @@ print_todos = (msg, project, searching) ->
       msg.send "No to-do found in this project #{project.name}" if searching
       return
     else
-      #result = ""
       for todo_list in todo_lists.records
-        result = "** #{todo_list.name} **\n" 
         if !todo_list.completed && !todo_list.todoItemIds.empty?
-          basecamp_request msg, "todo_lists/#{todo_list.id}/todo_items.json", (todo_items) ->
+          basecamp_request_with_params msg, "todo_lists/#{todo_list.id}/todo_items.json", {listName: todo_list.name}, (todo_items, params) ->
+            listName = params['listName']
+            result = ""
             for todo_item in todo_items.records
               responsability = "None"
               responsability = todo_item.responsibleParty.name if todo_item.responsibleParty
-              result += "[#{project.name}] #{todo_item.id} - #{todo_item.content} -> Responsible: #{responsability}\n" unless todo_item.completed
+              result += "[#{listName}] #{todo_item.id} - #{todo_item.content} -> Responsible: #{responsability}\n" unless todo_item.completed
             result += "\n"
             msg.send result
   
@@ -61,8 +61,11 @@ using_projects = (msg, project_name, handler) ->
           return
       else
         handler msg, project, false
-            
+
 basecamp_request = (msg, url, handler) ->
+  basecamp_request_with_params msg, url, {}, handler
+            
+basecamp_request_with_params = (msg, url, params, handler) ->
   basecamp_key = "#{process.env.HUBOT_BASECAMP_KEY}"
   auth = new Buffer("#{basecamp_key}:X").toString('base64')
   basecamp_url = "https://#{process.env.HUBOT_BASECAMP_URL}.basecamphq.com"
@@ -73,4 +76,4 @@ basecamp_request = (msg, url, handler) ->
           msg.send "Basecamp says: #{err}"
           return
         content = JSON.parse(body)
-        handler content
+        handler content, params
