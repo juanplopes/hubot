@@ -11,6 +11,8 @@ module.exports = (robot) ->
     show_calendar msg
   robot.hear /^basecamp todos( (.*))?$/i, (msg) ->
     show_todos msg
+  robot.hear /^basecamp assign (.*) to (.*)$/i, (msg) ->
+    assign_todo msg
 
 show_calendar = (msg) ->
   project_name = msg.match[2]
@@ -51,6 +53,39 @@ print_todos = (msg, project, searching) ->
             result += "\n"
             msg.send result
   
+assign_todo = (msg) ->
+  todoId = msg.match[1]
+  userName = msg.match[2]
+  usingPerson msg, userName, {todoId: todoId}, perform_assign_todo
+
+
+usingPerson = (msg, userName, params, handler) ->
+  basecamp_request msg, 'people.json', (people) ->
+    for person in people.records
+      if person.name == userName
+        handler msg, person, params
+        return
+    msg.send "Achievement unlocked: [NEEDLE IN A HAYSTACK] person #{userName} not found!"
+    
+perform_assign_todo = (msg, user, params) ->  
+  todoId = params['todoId']
+  basecamp_key = "#{process.env.HUBOT_BASECAMP_KEY}"
+  auth = new Buffer("#{basecamp_key}:X").toString('base64')
+  basecamp_url = "https://#{process.env.HUBOT_BASECAMP_URL}.basecamphq.com"
+  data = JSON.stringify {"todo-item": {"responsible-party": user.id }}
+  
+  msg.http("#{basecamp_url}/todo_items/#{todoId}.json")
+    .headers(Authorization: "Basic #{auth}", Accept: "application/json")
+      .put(data) (err, res, body) ->
+        if err
+          msg.send "Basecamp says: #fail: #{err}"
+          return
+        console.log res
+        console.log body
+        msg.send "Todo assigned"
+          
+  
+
 
 using_projects = (msg, project_name, handler) ->
   basecamp_request msg, 'projects.json', (projects) ->

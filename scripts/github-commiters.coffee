@@ -9,21 +9,25 @@
 
 module.exports = (robot) ->
   robot.hear /^repo commiters (.*)$/i, (msg) ->
-      read_contributors msg, (commits) ->
+      read_contributors msg, (repository, commits) ->
           max_length = commits.length
           max_length = 20 if commits.length > 20
+          result = "#{repository}\n"
           for commit in commits
-            msg.send "[#{commit.login}] #{commit.contributions}"
+            result += "[#{commit.login}] #{commit.contributions}\n"
             max_length -= 1
             return unless max_length
+          msg.send result
               
   robot.hear /^repo top-commiter (.*)$/i, (msg) ->
-      read_contributors msg, (commits) ->
+      read_contributors msg, (repository, commits) ->
           top_commiter = null
+          result = "#{repository}\n"
           for commit in commits
             top_commiter = commit if top_commiter == null
             top_commiter = commit if commit.contributions > top_commiter.contributions 
-          msg.send "[#{top_commiter.login}] #{top_commiter.contributions} :trophy:"
+          result += "[#{top_commiter.login}] #{top_commiter.contributions} :trophy:"
+          msg.send result
   
   
 read_contributors = (msg, response_handler) ->
@@ -46,5 +50,4 @@ read_contributors = (msg, response_handler) ->
         else if commits.length == 0
           msg.send "Achievement unlocked: [LIKE A BOSS] no commits found!"
         else
-          msg.send "http://github.com/#{repo}"
-          response_handler commits
+          response_handler "http://github.com/#{repo}", commits
