@@ -21,11 +21,13 @@ print_calendar = (msg, project, searching) ->
     if entries.count <= 0
       msg.send "No milestone found in this project #{project.name}" if searching
       return
+    result = ""
     for milestone in entries.records
       unless milestone.completedOn
         responsability = "None"
         responsability = milestone.responsibleParty.name if milestone.responsibleParty
-        msg.send "[#{project.name}] #{milestone.title} -> #{milestone.status}: #{milestone.deadline}, Responsible: #{responsability}"
+        result += "[#{project.name}] #{milestone.title} -> #{milestone.status}: #{milestone.deadline}, Responsible: #{responsability}\n"
+    msg.send result
 
 show_todos = (msg) ->
   project_name = msg.match[2]
@@ -37,13 +39,17 @@ print_todos = (msg, project, searching) ->
       msg.send "No to-do found in this project #{project.name}" if searching
       return
     else
+      #result = ""
       for todo_list in todo_lists.records
+        result = "** #{todo_list.name} **\n" 
         if !todo_list.completed && !todo_list.todoItemIds.empty?
           basecamp_request msg, "todo_lists/#{todo_list.id}/todo_items.json", (todo_items) ->
             for todo_item in todo_items.records
               responsability = "None"
               responsability = todo_item.responsibleParty.name if todo_item.responsibleParty
-              msg.send "[#{project.name}] #{todo_item.id} - #{todo_item.content} -> Responsible: #{responsability}" unless todo_item.completed
+              result += "[#{project.name}] #{todo_item.id} - #{todo_item.content} -> Responsible: #{responsability}\n" unless todo_item.completed
+            result += "\n"
+            msg.send result
   
 
 using_projects = (msg, project_name, handler) ->
