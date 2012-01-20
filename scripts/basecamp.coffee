@@ -43,11 +43,11 @@ print_todos = (msg, project, searching) ->
         if !todo_list.completed && !todo_list.todoItemIds.empty?
           basecamp_request_with_params msg, "todo_lists/#{todo_list.id}/todo_items.json", {listName: todo_list.name}, (todo_items, params) ->
             listName = params['listName']
-            result = ""
+            result = "-- #{listName} --\n"
             for todo_item in todo_items.records
               responsability = "None"
               responsability = todo_item.responsibleParty.name if todo_item.responsibleParty
-              result += "[#{listName}] #{todo_item.content} -> Responsible: #{responsability} (#{todo_item.id})\n" unless todo_item.completed
+              result += "#{todo_item.content} -> Responsible: #{responsability} (#{todo_item.id})\n" unless todo_item.completed
             result += "\n"
             msg.send result
   
