@@ -47,7 +47,7 @@ print_todos = (msg, project, searching) ->
             for todo_item in todo_items.records
               responsability = "None"
               responsability = todo_item.responsibleParty.name if todo_item.responsibleParty
-              result += "#{todo_item.content} -> Responsible: #{responsability} (#{todo_item.id})\n" unless todo_item.completed
+              result += "[#{todo_item.id}] #{todo_item.content} -> Responsible: #{responsability}\n" unless todo_item.completed
             result += "\n"
             msg.send result
   
