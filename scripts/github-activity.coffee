@@ -33,10 +33,11 @@ module.exports = (robot) ->
         else if commits.length == 0
             msg.send "Achievement unlocked: [LIKE A BOSS] no commits found!"
         else
-          msg.send "http://github.com/#{repo}"
+          msg_content = "http://github.com/#{repo}\n"
           send = 5
           for c in commits
             if send
               d = new Date(Date.parse(c.commit.committer.date)).toFormat("DD/MM HH24:MI")
-              msg.send "[#{d} -> #{c.commit.committer.name}] #{c.commit.message}" 
+              msg_content += "[#{d} -> #{c.commit.committer.name}] #{c.commit.message}\n" 
               send -= 1
+          msg.send msg_content
